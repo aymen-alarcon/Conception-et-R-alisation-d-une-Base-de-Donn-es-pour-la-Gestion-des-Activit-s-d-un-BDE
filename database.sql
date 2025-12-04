@@ -173,3 +173,21 @@ INSERT INTO evénements (nom_de_événement, description, date_event, lieu, budg
 ('ev18', 'desc18', '2025-01-18', 'l18', 18000, 18, 18, 18),
 ('ev19', 'desc19', '2025-01-19', 'l19', 19000, 19, 19, 19),
 ('ev20', 'desc20', '2025-01-20', 'l20', 20000, 20, 20, 20);
+
+-- Afficher tous les membres du BDE avec leur rôle et leur date d’adhésion.
+
+SELECT * FROM `members_bde`
+
+-- Lister tous les événements prévus après une date donnée.
+
+SELECT * FROM evénements WHERE date_event >= "2025-01-10";
+
+-- Afficher les informations des événements ayant un budget supérieur à 5000 MAD.
+
+SELECT * FROM `evénements` WHERE budget_prévu > 5000;
+
+-- Lister les participants inscrits à un événement spécifique.
+
+SELECT `participant_id` FROM `evénements`;
+
+-- Afficher les sponsors qui ont contribué à des événements ayant un budget supérieur à 3500 MAD.
