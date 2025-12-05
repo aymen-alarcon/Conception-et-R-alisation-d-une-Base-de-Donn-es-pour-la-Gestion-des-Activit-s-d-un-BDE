@@ -191,3 +191,62 @@ SELECT * FROM `evénements` WHERE budget_prévu > 5000;
 SELECT `participant_id` FROM `evénements`;
 
 -- Afficher les sponsors qui ont contribué à des événements ayant un budget supérieur à 3500 MAD.
+
+SELECT * FROM sponsers WHERE ID IN (SELECT sponsor_id FROM evénements WHERE budget_prévu >= 3500);
+
+-- Compter le nombre total d’événements organisés par le BDE.
+
+SELECT COUNT(*) FROM evénements;
+
+-- Calculer la moyenne du budget des événements organisés.
+
+SELECT AVG(budget_prévu) FROM `evénements`;
+
+-- Afficher le nom et la date des événements sponsorisés par un sponsor donné.
+
+SELECT `nom_de_événement`, `date_event` FROM evénements WHERE sponsor_id = 5;
+
+-- Lister les événements qui se déroulent dans un lieu donné.
+
+SELECT * FROM `evénements` WHERE lieu = "l1";
+
+-- Afficher les 5 derniers événements organisés par le BDE.
+
+SELECT * FROM `evénements` ORDER BY `date_event` DESC LIMIT 5;
+
+-- Lister les membres du BDE qui ont rejoint avant une date donnée.
+
+SELECT * FROM members_bde WHERE date_dahesion < '2025-01-10';
+
+-- Compter le nombre total de participants à un événement donné.
+
+SELECT COUNT(`participant_id`) FROM `evénements` WHERE `nom_de_événement` = "ev1";
+
+-- Afficher les noms des sponsors ayant contribué à plus d’un événement
+
+SELECT nom_entreprise FROM sponsers WHERE ID IN (SELECT COUNT(sponsor_id) FROM event_sponsors GROUP BY sponsor_id ORDER BY sponsor_id)
+
+-- Lister les participants inscrits à plusieurs événements.
+
+SELECT nom, prénom FROM participant WHERE ID IN (SELECT COUNT(participant_id) FROM evénements GROUP BY participant_id ORDER BY participant_id) LIMIT 1;
+
+-- Lister les événements n’ayant pas encore de participants inscrits.
+
+SELECT * FROM `evénements` WHERE `participant_id` = null;
+
+-- Afficher les détails du sponsor ayant contribué le plus au budget global des événements.
+
+
+SELECT * FROM sponsers WHERE ID = ( SELECT sponsor_id FROM evénements GROUP BY sponsor_id ORDER BY SUM(budget_prévu) DESC LIMIT 1);
+
+-- Compter le nombre de sponsors associés à chaque événement.
+
+SELECT ID,( SELECT COUNT(*) FROM event_sponsors WHERE event_sponsors.event_id = evénements.ID ) AS sponsors_count FROM evénements;
+
+-- Lister les événements qui ont au moins 10 participants.
+
+SELECT * FROM evénements WHERE ID IN ( SELECT event_id FROM event_sponsors GROUP BY event_id HAVING SUM(budget_sponsored) >= 10 );
+
+-- Afficher les détails des membres du BDE impliqués dans l’organisation d’événements spécifiques.
+
+SELECT * FROM members_bde WHERE ID = ( SELECT membres_responsables FROM evénements WHERE ID = 4);
